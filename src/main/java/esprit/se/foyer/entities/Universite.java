@@ -16,7 +16,7 @@ import java.io.Serializable;
 @Table( name = "Universite")
 public class Universite implements Serializable {
     @Id
-
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="idUniversite")
     private Long idUniversite; // Clé primaire
     private String nomUniversite;

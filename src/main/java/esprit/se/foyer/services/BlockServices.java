@@ -1,6 +1,7 @@
 package esprit.se.foyer.services;
 
 import esprit.se.foyer.entities.Bloc;
+import esprit.se.foyer.entities.Chambre;
 import esprit.se.foyer.repository.BlocRepository;
 import esprit.se.foyer.repository.ChambreRepository;
 import lombok.AllArgsConstructor;
@@ -41,6 +42,8 @@ public class BlockServices implements IBlockSrvices{
         blocRepository.deleteById(idBloc);
     }
 
+
+
     @Scheduled(fixedRate = 10000)
     public void listeChambresParBloc() {
         List<Bloc> blocs;
@@ -52,5 +55,7 @@ public class BlockServices implements IBlockSrvices{
 
     });
     }
+
+
 
 }

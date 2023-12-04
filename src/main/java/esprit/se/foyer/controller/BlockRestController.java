@@ -37,4 +37,6 @@ public class BlockRestController {
     public void removeBloc(@PathVariable Long id) {
         blockSrvices.removeBloc(id);
     }
+
+
 }

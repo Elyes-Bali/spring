@@ -7,9 +7,13 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.util.List;
+
 public interface ChambreRepository extends JpaRepository<Chambre,Long > {
     Chambre findByNumeroChambre(Long numeroChambre);
 
     @Query("select count (c) from Chambre c where c.typeC= :type")
     int coutparType(@Param("type")TypeChambre t);
+    long countByTypeC(TypeChambre type);
+    List<Chambre> findChambresByTypeCAndBloc_IdBloc(TypeChambre typeC ,long idBloc);
 }

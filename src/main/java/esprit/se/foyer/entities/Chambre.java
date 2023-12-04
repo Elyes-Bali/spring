@@ -1,5 +1,6 @@
 package esprit.se.foyer.entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -25,7 +26,7 @@ public class Chambre implements Serializable {
     @Enumerated(EnumType.STRING)
     private TypeChambre typeC;
     //private Long Bloc;
-
+    @JsonBackReference
     @ManyToOne
     private Bloc bloc;
     @OneToMany(cascade = CascadeType.ALL)

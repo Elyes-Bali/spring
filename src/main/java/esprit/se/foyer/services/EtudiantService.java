@@ -10,7 +10,10 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+
 @Service
 @Slf4j
 @AllArgsConstructor
@@ -43,14 +46,28 @@ public class EtudiantService implements IEtudiantServices{
         etudiantRepository.deleteById(idEtudiant);
     }
 
-//    @Override
-//    public Etudient affecterEtudiantAReservation(String nomEt, String prenomEt, String idReservation) {
-//        Etudient etudiant = etudiantRepository.findByNomEtudient(nomEt);
-//        Reservation reservation = reservationRepository.findByNomidres(idReservation);
-//        etudiant.setReservation(reservation);
-//        etudiantRepository.save(etudiant);
-//
-//        return etudiant;
-//    }
+    @Override
+    public Etudient affecterEtudiantAReservation(String nomEt, String prenomEt, String idReservation) {
+        Etudient etudiant = etudiantRepository.findByNomEtAndPrenomEt(nomEt,prenomEt);
+        Reservation reservation = reservationRepository.findById(idReservation).get();
+
+        if (etudiant != null && reservation != null) {
+            Set<Reservation> reservations = etudiant.getReservation();
+            if (reservations == null) {
+                reservations = new HashSet<>();
+            }
+            reservations.add(reservation);
+            etudiant.setReservation(reservations);
+
+            // Add the etudiant to the reservation as well
+            reservation.getEtudiant().add(etudiant);
+
+            etudiantRepository.save(etudiant);
+            reservationRepository.save(reservation);
+        }
+
+        return etudiant;
+    }
+
 
 }

@@ -3,6 +3,7 @@ package esprit.se.foyer.controller;
 import esprit.se.foyer.entities.Chambre;
 import esprit.se.foyer.entities.Etudient;
 import esprit.se.foyer.entities.Foyer;
+import esprit.se.foyer.entities.TypeChambre;
 import esprit.se.foyer.services.IChambreServices;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -43,10 +44,19 @@ public class ChambreController {
         chambreServices.removeChambre(idChambre);
     }
 
-    @PutMapping("/afficher/{numChambre}/{nomBlock}")
-    public Chambre affecterFoyerAUniversite(@PathVariable ("numChambre") List<Long> numChambre , @PathVariable ("nomBlock") String nomBloc ){
-        return chambreServices.affecterChambresABloc(numChambre,nomBloc);
+    @PutMapping("/afficher/{numeroChambre}/{nomBlock}")
+    public Chambre affecterChambresABloc(@PathVariable ("numeroChambre") List<Long> numeroChambre , @PathVariable ("nomBlock") String nomBloc ){
+        return chambreServices.affecterChambresABloc(numeroChambre,nomBloc);
     }
 
+    @GetMapping("/AfficheChambre/{nomBloc}")
+    public List<Chambre> getChambresParNomBloc(@PathVariable ("nomBloc") String nomBloc) {
+        return chambreServices.getChambresParNomBloc(nomBloc);
+    }
+
+    @GetMapping("/getChambresParBlocEtType/{typeC}/{idBloc}")
+    List<Chambre> nbChambreParTypeEtBloc(@PathVariable ("typeC") TypeChambre typeC,@PathVariable ("idBloc") long idBloc ){
+        return chambreServices.nbChambreParTypeEtBloc(typeC,idBloc);
+    }
 }
 

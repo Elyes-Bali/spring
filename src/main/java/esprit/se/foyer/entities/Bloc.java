@@ -1,5 +1,6 @@
 package esprit.se.foyer.entities;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -22,9 +23,9 @@ public class Bloc implements Serializable {
     private Long idBloc; // Clé primaire
     private String nomBloc;
     private Long CapBloc;
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     Foyer foyer;
-
+    @JsonManagedReference
     @OneToMany(cascade = CascadeType.ALL, mappedBy="bloc" , fetch = FetchType.EAGER)
     private Set<Chambre> chambre;
 }

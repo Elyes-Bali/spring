@@ -18,7 +18,7 @@ import java.util.Set;
 @Table( name = "Foyer")
 public class Foyer implements Serializable {
     @Id
-
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="idFoyer")
     private Long idFoyer; // Clé primaire
     private String nomFoyer;

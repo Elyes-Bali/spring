@@ -6,11 +6,13 @@ import esprit.se.foyer.repository.ChambreRepository;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
-import org.apache.juli.logging.Log;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 
 @Service
 @Slf4j
@@ -54,6 +56,17 @@ BlocRepository blocRepository;
         });
         return null;
     }
+    @Scheduled(fixedRate = 2000)
+    @Override
+    public void pourcentageChambreParTypeChambre() {
+        long totalChambres = chambreRepository.count();
+
+        for (TypeChambre type : TypeChambre.values()) {
+            long countByType = chambreRepository.countByTypeC(type);
+            double percentage = (countByType * 100.0) / totalChambres;
+            log.info("le poucentage des chambres pour le type " + type + " est égale à " + percentage + "%");
+        }
+    }
 
     @Scheduled(fixedRate = 5000)
     public void listeChambresParBloc() {
@@ -67,11 +80,28 @@ BlocRepository blocRepository;
                 });
     }
 
-//    @Scheduled(fixedRate = 5000)
-//    public void pourcentageChambreParTypeChambre(){
-//        long nbChamber = chambreRepository.count();
-//        for (int i=0;i>TypeChambre.values().length);
-//    }
 
+    @Override
+    public List<Chambre> getChambresParNomBloc(String nomBloc) {
+        Bloc bloc = blocRepository.findByNomBloc(nomBloc);
+
+        if (bloc != null) {
+            Set<Bloc> blocs = bloc.getFoyer().getBloc();
+            List<Chambre> chambres = new ArrayList<>();
+
+            for (Bloc Cbloc : blocs) {
+                chambres.addAll(Cbloc.getChambre());
+            }
+
+            return chambres;
+        }
+
+        return Collections.emptyList();
+    }
+
+    @Override
+    public List<Chambre> nbChambreParTypeEtBloc(TypeChambre typeC, long idBloc) {
+        return chambreRepository.findChambresByTypeCAndBloc_IdBloc(typeC,idBloc);
+    }
 
 }
